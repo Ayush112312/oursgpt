@@ -1,0 +1,8 @@
+{
+  "name": "OursGPT",
+  "description": "A premium, futuristic AI chatbot and image generation platform inspired by ChatGPT, powered by Gemini.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
