@@ -1249,6 +1249,7 @@
       display: flex;
       gap: 10px;
       align-items: center;
+      flex-wrap: wrap;
     }
 
     .pill-select {
@@ -1305,22 +1306,36 @@
 
     .idea-chips {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
       gap: 8px;
+      margin-top: 16px;
+      margin-bottom: 24px;
+      max-width: 600px;
     }
     .idea-chip {
       background: var(--card);
       border: 1px solid var(--line);
-      border-radius: var(--radius-pill);
-      padding: 5px 12px;
-      font-size: 12px;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
       color: var(--tx);
       cursor: pointer;
-      transition: border-color 0.15s, background-color 0.15s;
+      transition: all 0.2s ease;
+      text-align: left;
+      line-height: 1.4;
+      white-space: normal;
+      display: flex;
+      align-items: center;
     }
     .idea-chip:hover {
-      border-color: var(--ac);
       background: var(--card-hover);
+      border-color: var(--ac);
+    }
+    #studioRandomChip {
+      font-weight: 600;
+      border-color: var(--ac);
+      color: var(--ac);
+      margin-top: 4px;
     }
 
     .studio-result-frame {
@@ -2537,12 +2552,9 @@ button,input,textarea,select{font-family:inherit;}
               </div>
 
               <div class="idea-chips" id="studioIdeaChips">
-                <button class="idea-chip">Neon cyberpunk rooftop</button>
-                <button class="idea-chip">Brutalist desert architecture</button>
-                <button class="idea-chip">Astronaut over bioluminescent planet</button>
-                <button class="idea-chip">Origami hummingbird in flight</button>
-                <button class="idea-chip">Synthwave highway to wireframe sun</button>
-                <button class="idea-chip">Submerged coral temple ruins</button>
+                <button class="idea-chip">A massive bioluminescent jellyfish floating through a futuristic neon city.</button>
+                <button class="idea-chip">A steampunk airship sailing through a sea of golden sunset clouds.</button>
+                <button class="idea-chip">A majestic white stag with glowing runes standing in a dark enchanted forest.</button>
                 <button class="idea-chip" id="studioRandomChip">&#127922; Random Idea</button>
               </div>
 
@@ -4202,11 +4214,32 @@ button,input,textarea,select{font-family:inherit;}
       chip.addEventListener('click', () => {
         if (chip.id === 'studioRandomChip') {
           const list = [
-            'A bioluminescent underwater metropolis with manta ray transports',
-            'Floating crystalline monoliths above an endless sunset ocean',
-            'Cybernetic samurai looking over neo Kyoto skyscrapers at dusk',
-            'Retro 80s arcade interior illuminated by vibrant laser projections',
-            'Ancient monolithic clockwork machine overgrown by flora'
+            'A cybernetic samurai standing in a field of glowing red spider lilies.',
+            'A floating castle in the sky powered by giant glowing gears.',
+            'An underwater research facility surrounded by a school of glowing fish.',
+            'A surreal desert landscape with giant floating cubes and a lone traveler.',
+            'A cozy, rain-soaked coffee shop inside a vintage London double-decker bus.',
+            'An origami dragon made of glowing neon paper flying over a neon city.',
+            'A giant tortoise carrying an entire forest ecosystem on its back.',
+            'A futuristic racing track that weaves through asteroid fields in space.',
+            'A surreal painting of a staircase that loops infinitely into the sky.',
+            'A close-up macro shot of a mechanical butterfly on a circuit board flower.',
+            'A sprawling solarpunk metropolis with cascading vertical sky-gardens and glass monorails.',
+            'An ethereal cosmic library where books and scrolls drift among spiral galaxies.',
+            'A Victorian alchemist laboratory illuminated by bubbling phosphorescent vials.',
+            'A massive crystalline glacier with trapped primordial neon organisms glowing within.',
+            'A cozy greenhouse conservatory at twilight during a gentle meteor shower.',
+            'An ancient Nordic stone circle pulsating with aurora borealis light in winter snow.',
+            'A cyberpunk noodle vendor cart in a misty back-alley of Neo-Shinjuku.',
+            'A mystical spirit fox with nine flaming tail tips resting beneath a giant wisteria tree.',
+            'A colossal abandoned mech overgrown by moss and wild meadow flowers in sunset sunlight.',
+            'An Art Deco space station lounge overlooking the glowing turquoise rings of Saturn.',
+            'A sunken pirate galleon surrounded by glowing deep-sea anglerfish and coral caverns.',
+            'A whimsical steampunk clock tower that functions as a sanctuary for mechanical birds.',
+            'A serene Zen rock garden on a lunar crater with Earth rising on the horizon.',
+            'A hyper-detailed stained-glass cathedral window depicting the birth of a supernova.',
+            'A miniature floating bonsai island with a tiny cascading waterfall in mid-air.',
+            'A neon-lit subterranean marketplace carved directly into iridescent obsidian caverns.'
           ];
           const choice = list[Math.floor(Math.random() * list.length)];
           const p = document.getElementById('studioPrompt');
