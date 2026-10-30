@@ -3469,7 +3469,7 @@ button,input,textarea,select{font-family:inherit;}
       document.body.removeChild(ta);
     }
 
-    async function compressImageFile(file, maxDimension = 720, quality = 0.72) {
+    async function compressImageFile(file, maxDimension = 512, quality = 0.5) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -4058,7 +4058,7 @@ button,input,textarea,select{font-family:inherit;}
             playTone(820, 0.05);
 
           }
-        }, 16);
+        }, 8);
 
       } catch (err) {
         clearInterval(thinkTimer);
@@ -4775,7 +4775,7 @@ button,input,textarea,select{font-family:inherit;}
         }
 
         try {
-          attachedImageBase64 = await compressImageFile(file, 720, 0.72);
+          attachedImageBase64 = await compressImageFile(file, 512, 0.5);
           const box = document.getElementById('imagePreviewBox');
           const pImg = document.getElementById('previewImg');
           const pName = document.getElementById('previewName');
