@@ -4757,39 +4757,63 @@ button,input,textarea,select{font-family:inherit;}
 
     safeBind('sendBtn', 'click', handleSend);
 
+    async function handleImageFile(file, fallbackName = 'image.png') {
+      if (!file) return;
+      if (!file.type.startsWith('image/')) {
+        showToast('Please attach a valid image file.');
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        showToast('Image file size must be less than 5MB.');
+        return;
+      }
+
+      try {
+        attachedImageBase64 = await compressImageFile(file, 512, 0.5);
+        const box = document.getElementById('imagePreviewBox');
+        const pImg = document.getElementById('previewImg');
+        const pName = document.getElementById('previewName');
+        if (box && pImg && pName) {
+          box.style.display = 'flex';
+          pImg.src = attachedImageBase64;
+          pName.textContent = file.name || fallbackName;
+        }
+        finalizeSendState();
+        showToast('Image attached and optimized.');
+      } catch (err) {
+        showToast('Failed to process image attachment.');
+      }
+    }
+
     const attachBtn = document.getElementById('attachBtn');
     const imageInput = document.getElementById('imageInput');
     if (attachBtn && imageInput) {
       attachBtn.addEventListener('click', () => imageInput.click());
       imageInput.addEventListener('change', async (e) => {
         const file = e.target.files?.[0];
-        if (!file) return;
-        if (!file.type.startsWith('image/')) {
-          showToast('Please attach a valid image file.');
-          return;
-        }
-        if (file.size > 5 * 1024 * 1024) {
-          showToast('Image file size must be less than 5MB.');
-          return;
-        }
-
-        try {
-          attachedImageBase64 = await compressImageFile(file, 512, 0.5);
-          const box = document.getElementById('imagePreviewBox');
-          const pImg = document.getElementById('previewImg');
-          const pName = document.getElementById('previewName');
-          if (box && pImg && pName) {
-            box.style.display = 'flex';
-            pImg.src = attachedImageBase64;
-            pName.textContent = file.name;
-          }
-          finalizeSendState();
-          showToast('Image attached and optimized.');
-        } catch (err) {
-          showToast('Failed to process image attachment.');
+        if (file) {
+          await handleImageFile(file, file.name);
         }
       });
     }
+
+    document.addEventListener('paste', async (e) => {
+      const items = e.clipboardData?.items;
+      if (!items) return;
+
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        if (item.type && item.type.indexOf('image') !== -1) {
+          e.preventDefault();
+          const file = item.getAsFile();
+          if (file) {
+            await handleImageFile(file, 'Pasted Image');
+            showToast('Image pasted from clipboard.');
+          }
+          break;
+        }
+      }
+    });
 
     safeBind('removeImgBtn', 'click', clearAttachedImage);
 
