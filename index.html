@@ -3520,22 +3520,20 @@ button,input,textarea,select{font-family:inherit;}
         'Content-Type': 'application/json'
       };
 
-      let bodyString;
       try {
-        bodyString = JSON.stringify({ messages: messagesPayload });
-      } catch (err) {
-        clearTimeout(timeout);
-        throw new Error('Payload serialization failed: ' + err.message);
-      }
+        let bodyString;
+        try {
+          bodyString = JSON.stringify({ messages: messagesPayload });
+        } catch (err) {
+          throw new Error('Payload serialization failed: ' + err.message);
+        }
 
-      try {
         const res = await fetch(DEFAULT_AI_PROXY, {
           method: 'POST',
           headers: headers,
           body: bodyString,
           signal: activeAbortController.signal
         });
-        clearTimeout(timeout);
 
         if (!res.ok) {
           throw new Error(`Proxy returned HTTP ${res.status}`);
@@ -3549,13 +3547,14 @@ button,input,textarea,select{font-family:inherit;}
           return raw;
         }
       } catch (err) {
-        clearTimeout(timeout);
         if (err.name === 'AbortError') {
           throw err;
         }
         const lastUser = [...messagesPayload].reverse().find(m => m.role === 'user');
         const userText = typeof lastUser?.content === 'string' ? lastUser.content : (lastUser?.content?.[0]?.text || '');
         return generateOfflineAssistantResponse(userText);
+      } finally {
+        clearTimeout(timeout);
       }
     }
 
